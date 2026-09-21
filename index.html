@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Wrightbus - Supplier QR Code Form</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 * {
@@ -14,146 +15,207 @@
 body {
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
-    background: #f2f2f2;
+    background: #f3f4f6;
     color: #222;
 }
 
-.page {
-    max-width: 900px;
-    margin: 30px auto;
-    background: white;
-    padding: 35px;
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
 .header {
-    text-align: center;
-    border-bottom: 3px solid #222;
-    padding-bottom: 20px;
-    margin-bottom: 25px;
+    background: #111;
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
 }
 
 .header h1 {
     margin: 0;
-    font-size: 32px;
-    letter-spacing: 1px;
+    font-size: 30px;
+    letter-spacing: 2px;
 }
 
-.header h2 {
+.header p {
     margin: 8px 0 0;
-    font-size: 20px;
-    font-weight: normal;
+    font-size: 18px;
 }
 
 .instructions {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    padding: 15px;
-    margin-bottom: 25px;
-}
-
-.instructions strong {
-    display: block;
-    margin-bottom: 7px;
-}
-
-.field {
-    margin-bottom: 18px;
+    background: white;
+    padding: 18px;
+    border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     font-weight: bold;
-    margin-bottom: 7px;
+    margin-bottom: 6px;
 }
 
 input {
     width: 100%;
-    padding: 13px;
+    padding: 12px;
     font-size: 16px;
-    border: 1px solid #999;
-    border-radius: 4px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+}
+
+.delivery-section,
+.products-section {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.product-line {
+    display: grid;
+    grid-template-columns: 1fr 1fr 120px 45px;
+    gap: 10px;
+    margin-bottom: 12px;
+    align-items: end;
+}
+
+.remove-btn {
+    background: #ddd;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 8px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.add-btn {
+    background: #444;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .buttons {
-    text-align: center;
-    margin: 25px 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
 button {
-    padding: 13px 22px;
     font-size: 16px;
-    border: 0;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px;
 }
 
-.generate {
-    background: #222;
+.generate-btn {
+    background: #111;
     color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
-.clear {
+.clear-btn {
     background: #ddd;
-    color: #222;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-#qr-section {
+.print-btn {
+    background: #111;
+    color: white;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+#output {
     display: none;
-    margin-top: 30px;
+}
+
+.delivery-qr {
+    background: white;
+    border: 2px solid #111;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.delivery-qr h2 {
+    margin-bottom: 15px;
+}
+
+.delivery-code {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.lines {
+    display: grid;
+    gap: 20px;
+}
+
+.qr-line {
+    background: white;
+    border: 1px solid #bbb;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.qr-line h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 
 .qr-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
 
 .qr-card {
-    border: 2px solid #222;
-    padding: 20px;
     text-align: center;
-    min-height: 310px;
+    padding: 10px;
 }
 
-.qr-card h2 {
-    margin: 0 0 8px;
-    font-size: 18px;
-    text-transform: uppercase;
+.qr-card h4 {
+    margin: 5px 0 10px;
 }
 
-.value {
-    font-size: 16px;
+.qr-value {
     font-weight: bold;
-    margin-bottom: 12px;
+    margin-top: 8px;
     word-break: break-word;
 }
 
-.qr-code {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 200px;
-}
-
-.print-area {
-    text-align: center;
-    margin-top: 25px;
-}
-
-.footer {
+footer {
     text-align: center;
     margin-top: 30px;
-    padding-top: 15px;
-    border-top: 1px solid #ccc;
     color: #666;
     font-size: 13px;
 }
 
-@media (max-width: 650px) {
-    .page {
-        margin: 0;
-        padding: 20px;
+@media (max-width: 700px) {
+    .product-line {
+        grid-template-columns: 1fr;
     }
 
     .qr-grid {
@@ -162,7 +224,6 @@ button {
 }
 
 @media print {
-
     @page {
         size: A4;
         margin: 10mm;
@@ -172,239 +233,310 @@ button {
         background: white;
     }
 
-    .page {
-        max-width: none;
-        margin: 0;
-        padding: 0;
-    }
-
     .input-area,
-    .print-area {
+    .print-btn,
+    footer {
         display: none !important;
     }
 
-    #qr-section {
-        display: block !important;
-        margin: 0;
+    .container {
+        max-width: none;
+        padding: 0;
     }
 
-    .header {
-        margin-bottom: 15mm;
+    #output {
+        display: block !important;
+    }
+
+    .delivery-qr,
+    .qr-line {
+        break-inside: avoid;
     }
 
     .qr-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10mm;
+        grid-template-columns: repeat(3, 1fr);
     }
 
     .qr-card {
-        height: 115mm;
-        min-height: 0;
-        page-break-inside: avoid;
-    }
-
-    .footer {
-        margin-top: 10mm;
+        break-inside: avoid;
     }
 }
 </style>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
 </head>
 
 <body>
 
-<div class="page">
-
-    <div class="header">
-        <h1>WRIGHTBUS</h1>
-        <h2>Supplier QR Code Form</h2>
-    </div>
+<div class="container">
 
     <div class="input-area">
 
+        <div class="header">
+            <h1>WRIGHTBUS</h1>
+            <p>Supplier QR Code Form</p>
+        </div>
+
         <div class="instructions">
-            <strong>Supplier Instructions</strong>
-            Enter the four pieces of information below and select
-            "Generate QR Codes". Once the four QR codes have been created,
-            select "Print / Save as PDF" and return the completed PDF.
+            <strong>Instructions:</strong>
+            Enter the delivery note number and add each product line.
+            Each product line will create separate QR codes for the PO,
+            Product Code and Quantity. One Delivery Note QR will be created
+            for the whole delivery.
         </div>
 
-        <div class="field">
-            <label for="po">PO Number</label>
-            <input id="po" type="text" placeholder="Enter PO number">
+        <div class="delivery-section">
+            <label for="deliveryNote">Delivery Note</label>
+            <input type="text" id="deliveryNote" placeholder="Enter delivery note number">
         </div>
 
-        <div class="field">
-            <label for="product">Product Code</label>
-            <input id="product" type="text" placeholder="Enter product code">
-        </div>
+        <div class="products-section">
+            <h2>Product Lines</h2>
 
-        <div class="field">
-            <label for="quantity">Quantity</label>
-            <input id="quantity" type="text" placeholder="Enter quantity">
-        </div>
+            <div id="productLines"></div>
 
-        <div class="field">
-            <label for="delivery">Delivery Note</label>
-            <input id="delivery" type="text" placeholder="Enter delivery note">
-        </div>
-
-        <div class="buttons">
-
-            <button class="generate" onclick="generateQR()">
-                Generate QR Codes
+            <button class="add-btn" onclick="addLine()">
+                + Add another product
             </button>
 
-            <button class="clear" onclick="clearForm()">
-                Clear
-            </button>
+            <div class="buttons">
+                <button class="generate-btn" onclick="generateQRCodes()">
+                    Generate QR Codes
+                </button>
 
+                <button class="clear-btn" onclick="clearForm()">
+                    Clear
+                </button>
+            </div>
         </div>
 
     </div>
 
-    <div id="qr-section">
+    <div id="output">
 
-        <div class="qr-grid">
+        <button class="print-btn" onclick="window.print()">
+            Print / Save as PDF
+        </button>
 
-            <div class="qr-card">
-                <h2>PO Number</h2>
-                <div class="value" id="po-value"></div>
-                <div class="qr-code" id="po-qr"></div>
-            </div>
+        <div id="qrOutput"></div>
 
-            <div class="qr-card">
-                <h2>Product Code</h2>
-                <div class="value" id="product-value"></div>
-                <div class="qr-code" id="product-qr"></div>
-            </div>
+        <footer>
+            Wrightbus — Supplier QR Code Form
+        </footer>
 
-            <div class="qr-card">
-                <h2>Quantity</h2>
-                <div class="value" id="quantity-value"></div>
-                <div class="qr-code" id="quantity-qr"></div>
-            </div>
-
-            <div class="qr-card">
-                <h2>Delivery Note</h2>
-                <div class="value" id="delivery-value"></div>
-                <div class="qr-code" id="delivery-qr"></div>
-            </div>
-
-        </div>
-
-        <div class="print-area">
-
-            <button class="generate" onclick="window.print()">
-                Print / Save as PDF
-            </button>
-
-        </div>
-
-    </div>
-
-    <div class="footer">
-        Wrightbus — Supplier QR Code Form
     </div>
 
 </div>
 
 <script>
 
-function createQR(id, text) {
+let lineNumber = 0;
 
-    const element = document.getElementById(id);
+function addLine() {
 
-    element.innerHTML = "";
+    lineNumber++;
 
-    new QRCode(element, {
-        text: text,
-        width: 180,
-        height: 180,
-        correctLevel: QRCode.CorrectLevel.M
-    });
+    const container = document.getElementById("productLines");
+
+    const line = document.createElement("div");
+
+    line.className = "product-line";
+
+    line.innerHTML = `
+        <div>
+            <label>PO Number</label>
+            <input type="text" class="po" placeholder="PO Number">
+        </div>
+
+        <div>
+            <label>Product Code</label>
+            <input type="text" class="product" placeholder="Product Code">
+        </div>
+
+        <div>
+            <label>Quantity</label>
+            <input type="text" class="quantity" placeholder="Quantity">
+        </div>
+
+        <button class="remove-btn" onclick="this.parentElement.remove()">
+            ×
+        </button>
+    `;
+
+    container.appendChild(line);
 }
 
+function generateQRCodes() {
 
-function generateQR() {
+    const deliveryNote =
+        document.getElementById("deliveryNote").value.trim();
 
-    const po =
-        document.getElementById("po").value.trim();
-
-    const product =
-        document.getElementById("product").value.trim();
-
-    const quantity =
-        document.getElementById("quantity").value.trim();
-
-    const delivery =
-        document.getElementById("delivery").value.trim();
-
-
-    if (!po || !product || !quantity || !delivery) {
-
-        alert("Please complete all four fields.");
-
+    if (!deliveryNote) {
+        alert("Please enter a Delivery Note.");
         return;
     }
 
+    const lines =
+        document.querySelectorAll(".product-line");
 
-    document.getElementById("po-value").textContent =
-        po;
+    if (lines.length === 0) {
+        alert("Please add at least one product line.");
+        return;
+    }
 
-    document.getElementById("product-value").textContent =
-        product;
+    const output =
+        document.getElementById("qrOutput");
 
-    document.getElementById("quantity-value").textContent =
-        quantity;
+    output.innerHTML = "";
 
-    document.getElementById("delivery-value").textContent =
-        delivery;
+    // Delivery Note QR
+    const deliveryBox =
+        document.createElement("div");
 
+    deliveryBox.className = "delivery-qr";
 
-    createQR(
-        "po-qr",
-        "PO Number: " + po
+    deliveryBox.innerHTML = `
+        <h2>Delivery Note</h2>
+        <div class="delivery-code">${escapeHtml(deliveryNote)}</div>
+        <div id="deliveryQR"></div>
+    `;
+
+    output.appendChild(deliveryBox);
+
+    new QRCode(
+        document.getElementById("deliveryQR"),
+        {
+            text: deliveryNote,
+            width: 180,
+            height: 180
+        }
     );
 
-    createQR(
-        "product-qr",
-        "Product Code: " + product
-    );
+    // Product lines
+    const linesContainer =
+        document.createElement("div");
 
-    createQR(
-        "quantity-qr",
-        "Quantity: " + quantity
-    );
+    linesContainer.className = "lines";
 
-    createQR(
-        "delivery-qr",
-        "Delivery Note: " + delivery
-    );
+    let valid = true;
 
+    lines.forEach((line, index) => {
 
-    document.getElementById("qr-section").style.display =
-        "block";
+        const po =
+            line.querySelector(".po").value.trim();
+
+        const product =
+            line.querySelector(".product").value.trim();
+
+        const quantity =
+            line.querySelector(".quantity").value.trim();
+
+        if (!po || !product || !quantity) {
+            valid = false;
+            return;
+        }
+
+        const qrLine =
+            document.createElement("div");
+
+        qrLine.className = "qr-line";
+
+        qrLine.innerHTML = `
+            <h3>Product Line ${index + 1}</h3>
+
+            <div class="qr-grid">
+
+                <div class="qr-card">
+                    <h4>PO Number</h4>
+                    <div id="poQR${index}"></div>
+                    <div class="qr-value">${escapeHtml(po)}</div>
+                </div>
+
+                <div class="qr-card">
+                    <h4>Product Code</h4>
+                    <div id="productQR${index}"></div>
+                    <div class="qr-value">${escapeHtml(product)}</div>
+                </div>
+
+                <div class="qr-card">
+                    <h4>Quantity</h4>
+                    <div id="quantityQR${index}"></div>
+                    <div class="qr-value">${escapeHtml(quantity)}</div>
+                </div>
+
+            </div>
+        `;
+
+        linesContainer.appendChild(qrLine);
+
+        new QRCode(
+            qrLine.querySelector(`#poQR${index}`),
+            {
+                text: po,
+                width: 150,
+                height: 150
+            }
+        );
+
+        new QRCode(
+            qrLine.querySelector(`#productQR${index}`),
+            {
+                text: product,
+                width: 150,
+                height: 150
+            }
+        );
+
+        new QRCode(
+            qrLine.querySelector(`#quantityQR${index}`),
+            {
+                text: quantity,
+                width: 150,
+                height: 150
+            }
+        );
+
+    });
+
+    if (!valid) {
+        alert("Please complete PO Number, Product Code and Quantity for every product line.");
+        return;
+    }
+
+    output.appendChild(linesContainer);
+
+    document.getElementById("output").style.display = "block";
+
+    window.scrollTo({
+        top: document.getElementById("output").offsetTop,
+        behavior: "smooth"
+    });
 }
-
 
 function clearForm() {
 
-    document.getElementById("po").value = "";
-    document.getElementById("product").value = "";
-    document.getElementById("quantity").value = "";
-    document.getElementById("delivery").value = "";
+    document.getElementById("deliveryNote").value = "";
 
-    document.getElementById("qr-section").style.display =
-        "none";
+    document.getElementById("productLines").innerHTML = "";
 
-    document.getElementById("po-qr").innerHTML = "";
-    document.getElementById("product-qr").innerHTML = "";
-    document.getElementById("quantity-qr").innerHTML = "";
-    document.getElementById("delivery-qr").innerHTML = "";
+    document.getElementById("qrOutput").innerHTML = "";
+
+    document.getElementById("output").style.display = "none";
+
+    lineNumber = 0;
+
+    addLine();
 }
+
+function escapeHtml(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+}
+
+// Start with one product line
+addLine();
 
 </script>
 
