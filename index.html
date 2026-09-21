@@ -4,207 +4,255 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Supplier QR Code Form</title>
+<title>Wrightbus - Supplier QR Code Form</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    body {
-        font-family: Arial, sans-serif;
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f2f2f2;
+    color: #222;
+}
+
+.page {
+    max-width: 900px;
+    margin: 30px auto;
+    background: white;
+    padding: 35px;
+}
+
+.header {
+    text-align: center;
+    border-bottom: 3px solid #222;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 32px;
+    letter-spacing: 1px;
+}
+
+.header h2 {
+    margin: 8px 0 0;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.instructions {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 25px;
+}
+
+.instructions strong {
+    display: block;
+    margin-bottom: 7px;
+}
+
+.field {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    font-size: 16px;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
+
+.buttons {
+    text-align: center;
+    margin: 25px 0;
+}
+
+button {
+    padding: 13px 22px;
+    font-size: 16px;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.generate {
+    background: #222;
+    color: white;
+}
+
+.clear {
+    background: #ddd;
+    color: #222;
+}
+
+#qr-section {
+    display: none;
+    margin-top: 30px;
+}
+
+.qr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.qr-card {
+    border: 2px solid #222;
+    padding: 20px;
+    text-align: center;
+    min-height: 310px;
+}
+
+.qr-card h2 {
+    margin: 0 0 8px;
+    font-size: 18px;
+    text-transform: uppercase;
+}
+
+.value {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    word-break: break-word;
+}
+
+.qr-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.print-area {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #ccc;
+    color: #666;
+    font-size: 13px;
+}
+
+@media (max-width: 650px) {
+    .page {
         margin: 0;
-        background: #f2f2f2;
-        color: #222;
-    }
-
-    .form-page {
-        max-width: 850px;
-        margin: 30px auto;
-        background: white;
-        padding: 35px;
-        border-radius: 8px;
-    }
-
-    h1 {
-        text-align: center;
-        margin-top: 0;
-    }
-
-    .instructions {
-        text-align: center;
-        color: #555;
-        margin-bottom: 30px;
-    }
-
-    .field {
-        margin-bottom: 20px;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 7px;
-    }
-
-    input {
-        width: 100%;
-        padding: 13px;
-        font-size: 16px;
-        border: 1px solid #aaa;
-        border-radius: 5px;
-    }
-
-    button {
-        padding: 13px 22px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin: 5px;
-    }
-
-    .generate {
-        background: #222;
-        color: white;
-    }
-
-    .clear {
-        background: #ddd;
-    }
-
-    .buttons {
-        text-align: center;
-        margin: 25px 0;
-    }
-
-    #qr-section {
-        display: none;
-        margin-top: 30px;
+        padding: 20px;
     }
 
     .qr-grid {
-        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+
+@media print {
+
+    @page {
+        size: A4;
+        margin: 10mm;
+    }
+
+    body {
+        background: white;
+    }
+
+    .page {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .input-area,
+    .print-area {
+        display: none !important;
+    }
+
+    #qr-section {
+        display: block !important;
+        margin: 0;
+    }
+
+    .header {
+        margin-bottom: 15mm;
+    }
+
+    .qr-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 20px;
+        gap: 10mm;
     }
 
     .qr-card {
-        border: 1px solid #ccc;
-        padding: 20px;
-        text-align: center;
-        min-height: 300px;
+        height: 115mm;
+        min-height: 0;
+        page-break-inside: avoid;
     }
 
-    .qr-card h2 {
-        font-size: 18px;
-        margin-bottom: 8px;
+    .footer {
+        margin-top: 10mm;
     }
-
-    .value {
-        font-weight: normal;
-        margin-bottom: 12px;
-        word-break: break-word;
-    }
-
-    .qr-code {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 200px;
-    }
-
-    .print-button {
-        text-align: center;
-        margin-top: 25px;
-    }
-
-    @media (max-width: 650px) {
-        .qr-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .form-page {
-            margin: 0;
-            border-radius: 0;
-        }
-    }
-
-    @media print {
-
-        body {
-            background: white;
-        }
-
-        .form-page {
-            margin: 0;
-            padding: 10mm;
-            max-width: none;
-        }
-
-        .instructions,
-        .input-section,
-        .print-button {
-            display: none !important;
-        }
-
-        #qr-section {
-            display: block !important;
-            margin: 0;
-        }
-
-        .qr-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 12mm;
-        }
-
-        .qr-card {
-            min-height: 0;
-            height: 115mm;
-            page-break-inside: avoid;
-        }
-    }
+}
 </style>
 
-<!-- QR code library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 </head>
 
 <body>
 
-<div class="form-page">
+<div class="page">
 
-    <h1>Supplier QR Code Form</h1>
+    <div class="header">
+        <h1>WRIGHTBUS</h1>
+        <h2>Supplier QR Code Form</h2>
+    </div>
 
-    <p class="instructions">
-        Enter the four pieces of information below, then click
-        "Generate QR Codes".
-    </p>
+    <div class="input-area">
 
-    <div class="input-section">
+        <div class="instructions">
+            <strong>Supplier Instructions</strong>
+            Enter the four pieces of information below and select
+            "Generate QR Codes". Once the four QR codes have been created,
+            select "Print / Save as PDF" and return the completed PDF.
+        </div>
 
         <div class="field">
-            <label>PO Number</label>
+            <label for="po">PO Number</label>
             <input id="po" type="text" placeholder="Enter PO number">
         </div>
 
         <div class="field">
-            <label>Product Code</label>
+            <label for="product">Product Code</label>
             <input id="product" type="text" placeholder="Enter product code">
         </div>
 
         <div class="field">
-            <label>Quantity</label>
+            <label for="quantity">Quantity</label>
             <input id="quantity" type="text" placeholder="Enter quantity">
         </div>
 
         <div class="field">
-            <label>Delivery Note</label>
+            <label for="delivery">Delivery Note</label>
             <input id="delivery" type="text" placeholder="Enter delivery note">
         </div>
 
         <div class="buttons">
+
             <button class="generate" onclick="generateQR()">
                 Generate QR Codes
             </button>
@@ -212,6 +260,7 @@
             <button class="clear" onclick="clearForm()">
                 Clear
             </button>
+
         </div>
 
     </div>
@@ -246,21 +295,27 @@
 
         </div>
 
-        <div class="print-button">
+        <div class="print-area">
+
             <button class="generate" onclick="window.print()">
                 Print / Save as PDF
             </button>
+
         </div>
 
+    </div>
+
+    <div class="footer">
+        Wrightbus — Supplier QR Code Form
     </div>
 
 </div>
 
 <script>
 
-function makeQR(elementId, text) {
+function createQR(id, text) {
 
-    const element = document.getElementById(elementId);
+    const element = document.getElementById(id);
 
     element.innerHTML = "";
 
@@ -309,22 +364,22 @@ function generateQR() {
         delivery;
 
 
-    makeQR(
+    createQR(
         "po-qr",
         "PO Number: " + po
     );
 
-    makeQR(
+    createQR(
         "product-qr",
         "Product Code: " + product
     );
 
-    makeQR(
+    createQR(
         "quantity-qr",
         "Quantity: " + quantity
     );
 
-    makeQR(
+    createQR(
         "delivery-qr",
         "Delivery Note: " + delivery
     );
